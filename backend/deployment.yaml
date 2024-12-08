@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: search-imdb-backend-deployment
+  labels:
+    app: search-imdb-backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: search-imdb-backend
+  template:
+    metadata:
+      labels:
+        app: search-imdb-backend
+    spec:
+      containers:
+      - name: search-imdb-backend
+        image: orsanaw/search-imdb-backend:1.0.6
+        ports:
+        - containerPort: 80
+        env:
+          - name: ENV
+            value: "CIVO"

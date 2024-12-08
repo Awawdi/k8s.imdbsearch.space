@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: search-imdb-frontend
+  labels:
+    app: search-imdb-frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: search-imdb-frontend
+  template:
+    metadata:
+      labels:
+        app: search-imdb-frontend
+    spec:
+      containers:
+      - name: search-imdb-frontend
+        image: orsanaw/search-imdb-frontend:1.0
+        ports:
+        - containerPort: 3000
+        env:
+        - name: BACKEND_URL
+          value: "http://search-imdb-backend:5000"

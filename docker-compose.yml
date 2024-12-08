@@ -1,0 +1,45 @@
+services:
+
+  backend:
+    image: search-imdb-backend
+    pull_policy: never
+    container_name: search-imdb-backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: runner_stage
+    ports:
+      - 8000:8000
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - mongodb
+
+  frontend:
+    image: search-imdb-frontend
+    pull_policy: never
+    container_name: search-imdb-frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+
+  mongodb:
+    image: mongo:8.0.0
+    container_name: search-imdb-mongodb
+    volumes:
+      - mongodb-persistent-volume:/data/db
+    env_file:
+      - ./mongodb/.env
+
+  mongo-express:
+    image: mongo-express:1.0.2
+    ports:
+      - 8081:8081
+    container_name: search-imdb-mongo-express
+    env_file:
+    - ./mongo-express/.env
+
+volumes:
+  mongodb-persistent-volume:
